@@ -3,7 +3,7 @@
   def search_product(product):
   search_query = product.replace(' ', '+')
   url = f'https://www.amazon.in/s?k={search_query}'
-  response = requests.get(url
+  response = requests.get(url)
   soup = BeautifulSoup(response.content, 'html.parser')
   products = soup.find_all('div', {'data-component-type': 's-search-result'})
   for product in products:
@@ -25,7 +25,7 @@
   from selenium.webdriver.common.keys import Keys
   from selenium.webdriver.support.ui import WebDriverWait
   from selenium.webdriver.support import expected_conditions as EC
-  driver_path = 'path_to_chromedriver'
+  driver_path = 'r"E:\Jinumatthew\chromedriver_win32\chromedriver.exe"'
   driver = webdriver.Chrome(driver_path)
   driver.get('https://images.google.com')
   search_bar = driver.find_element(By.NAME, 'q')
@@ -47,7 +47,7 @@
   from bs4 import BeautifulSoup
   import pandas as pd
   def scrape_smartphones():
-  url = "https://www.flipkart.com/search?q=smartphone"  # Replace "smartphone" with your desired search query
+  url = "https://www.flipkart.com/search?q=smartphone"
   response = requests.get(url)
   soup = BeautifulSoup(response.content, 'html.parser')
   smartphones = []
