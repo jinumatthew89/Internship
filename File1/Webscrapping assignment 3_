@@ -1,0 +1,183 @@
+1.import requests
+  from bs4 import BeautifulSoup
+  def search_product(product):
+  search_query = product.replace(' ', '+')
+  url = f'https://www.amazon.in/s?k={search_query}'
+  response = requests.get(url
+  soup = BeautifulSoup(response.content, 'html.parser')
+  products = soup.find_all('div', {'data-component-type': 's-search-result'})
+  for product in products:
+  title = product.find('span', {'class': 'a-size-medium'}).text.strip()
+  price = product.find('span', {'class': 'a-price-whole'}).text.strip()
+  rating = product.find('span', {'class': 'a-icon-alt'}).text.strip()
+  print(f'Title: {title}')
+  print(f'Price: {price}')
+  print(f'Rating: {rating}')
+  print('---')
+  product = input('Enter the product to search: ')
+  search_product(product)
+
+
+
+
+3.from selenium import webdriver
+  from selenium.webdriver.common.by import By
+  from selenium.webdriver.common.keys import Keys
+  from selenium.webdriver.support.ui import WebDriverWait
+  from selenium.webdriver.support import expected_conditions as EC
+  driver_path = 'path_to_chromedriver'
+  driver = webdriver.Chrome(driver_path)
+  driver.get('https://images.google.com')
+  search_bar = driver.find_element(By.NAME, 'q')
+  keywords = ['fruits', 'cars', 'Machine Learning', 'Guitar', 'Cakes']
+  for keyword in keywords:
+  search_bar.clear()
+  search_bar.send_keys(keyword)
+  search_bar.send_keys(Keys.RETURN
+  WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'rg_i')))
+  image_elements = driver.find_elements(By.CLASS_NAME, 'rg_i')
+  image_urls = [element.get_attribute('src') for element in image_elements]
+  print(f"Top 10 images for '{keyword}':")
+  for url in image_urls[:10]:
+  print(url)
+  driver.quit()
+
+
+4. import requests
+  from bs4 import BeautifulSoup
+  import pandas as pd
+  def scrape_smartphones():
+  url = "https://www.flipkart.com/search?q=smartphone"  # Replace "smartphone" with your desired search query
+  response = requests.get(url)
+  soup = BeautifulSoup(response.content, 'html.parser')
+  smartphones = []
+  results = soup.find_all('div', {'class': '_1AtVbE'})
+  for result in results:
+  details = {}
+  details['Brand Name'] = result.find('div', {'class': '_4rR01T'}).text
+  details['Smartphone Name'] = result.find('a', {'class': 'IRpwTa'}).text
+  details['Colour'] = result.find('div', {'class': '_2WkVRV'}).text
+  details['RAM'] = result.find('ul', {'class': '_1xgFaf'}).find_all('li')[0].text
+  details['Storage(ROM)'] = result.find('ul', {'class': '_1xgFaf'}).find_all('li')[1].text
+  details['Primary Camera'] = result.find('ul', {'class': '_1xgFaf'}).find_all('li')[2].text
+  details['Secondary Camera'] = result.find('ul', {'class': '_1xgFaf'}).find_all('li')[3].text
+  details['Display Size'] = result.find('ul', {'class': '_1xgFaf'}).find_all('li')[4].text
+  details['Battery Capacity'] = result.find('ul', {'class': '_1xgFaf'}).find_all('li')[5].text
+  details['Price'] = result.find('div', {'class': '_30jeq3 _1_WHN1'}).text
+  details['Product URL'] = "https://www.flipkart.com" + result.find('a', {'class': 'IRpwTa'})['href']
+  smartphones.append(details)
+  return smartphones
+  smartphones = scrape_smartphones()
+  df = pd.DataFrame(smartphones)
+  df.fillna("-", inplace=True)
+  df.to_csv('smartphones.csv', index=False)
+
+
+5. import requests
+  from bs4 import BeautifulSoup
+  def get_coordinates(city):
+  query = f"google maps {city} coordinates"
+  response = requests.get(f"https://www.google.com/search?q={query}")
+  soup = BeautifulSoup(response.text, 'html.parser')
+  result = soup.find("div", class_="BNeawe iBp4i AP7Wnd")
+  coordinates = result.text.split(",")
+  latitude = coordinates[0].strip()
+  longitude = coordinates[1].strip()
+  return latitude, longitude
+
+
+6. from selenium import webdriver
+  import time
+  driver = webdriver.Chrome(r"E:\Jinumatthew\chromedriver_win32\chromedriver.exe")
+  driver.get('https://www.digit.in/')
+  search_bar = driver.find_element_by_id('searchDiv')
+  search_bar.send_keys('gaming laptops')
+  search_bar.submit()
+  time.sleep(2)
+  laptop_elements = driver.find_elements_by_class_name('searchPage')
+  laptop_details = []
+  for laptop in laptop_elements:
+  name = laptop.find_element_by_class_name('searchProductTitle').text
+  price = laptop.find_element_by_class_name('searchPrice').text
+  specifications = laptop.find_element_by_class_name('searchSpec').text
+  laptop_details.append({'Name': name,'Price': price,'Specifications': specifications})
+  for laptop in laptop_details:
+  print(laptop)
+  driver.quit()
+
+
+7. import requests
+  from bs4 import BeautifulSoup
+  url = "https://www.forbes.com/billionaires/"
+  response = requests.get(url)
+  soup = BeautifulSoup(response.content, "html.parser")
+  table = soup.find("table", class_="table")
+  rows = table.find_all("tr")
+  for row in rows:
+  columns = row.find_all("td")
+  rank = columns[0].text.strip()
+  name = columns[1].text.strip()
+  net_worth = columns[2].text.strip()
+  age = columns[3].text.strip()
+  citizenship = columns[4].text.strip()
+  source = columns[5].text.strip()
+  industry = columns[6].text.strip()
+  print("Rank:", rank)
+  print("Name:", name)
+  print("Net Worth:", net_worth)
+  print("Age:", age)
+  print("Citizenship:", citizenship)
+  print("Source:", source)
+  print("Industry:", industry)
+  print()
+
+
+
+8. from selenium import webdriver
+  import time
+  driver = webdriver.Chrome(r"E:\Jinumatthew\chromedriver_win32\chromedriver.exe")
+  video_url = 'https://www.youtube.com/watch?v=your_video_id'
+  driver.get(video_url)
+  scroll_pause_time = 2
+  scrolls = 10
+  for _ in range(scrolls):
+  driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
+  time.sleep(scroll_pause_time)
+  comments = driver.find_elements_by_xpath('//yt-formatted-string[@id="content-text"]')
+  upvotes = driver.find_elements_by_xpath('//span[@id="vote-count-middle"]')
+  times = driver.find_elements_by_xpath('//a[@class="yt-simple-endpoint style-scope yt-formatted-string"]')
+  extracted_data = []
+  for comment, upvote, time in zip(comments, upvotes, times):
+  extracted_data.append({'comment': comment.text,'upvote': upvote.text,'time': time.text})
+  driver.quit()
+  for data in extracted_data:
+  print(data)
+
+
+9.  import requests
+  from bs4 import BeautifulSoup
+  url = "https://www.hostelworld.com/hostels/London"
+  response = requests.get(url)
+  soup = BeautifulSoup(response.content, "html.parser")
+  hostels = soup.find_all("div", class_="fabresult")
+  for hostel in hostels:
+  name = hostel.find("h2", class_="fabresult-title").text.strip()
+  distance = hostel.find("span", class_="distance").text.strip()
+  ratings = hostel.find("div", class_="rating").text.strip()
+  total_reviews = hostel.find("div", class_="reviews").text.strip()
+  overall_reviews = hostel.find("div", class_="overall").text.strip()
+  privates_price = hostel.find("div", class_="price-col").find("div", class_="price").text.strip()
+  dorms_price = hostel.find("div", class_="price-col").find("div", class_="price").find_next_sibling("div", class_="price").text.strip()
+  facilities = hostel.find("div", class_="facilities").text.strip()
+  description = hostel.find("div", class_="description").text.strip()
+  print("Hostel Name:", name)
+  print("Distance from City Centre:", distance)
+  print("Ratings:", ratings)
+  print("Total Reviews:", total_reviews)
+  print("Overall Reviews:", overall_reviews)
+  print("Privates from Price:", privates_price)
+  print("Dorms from Price:", dorms_price)
+  print("Facilities:", facilities)
+  print("Property Description:", description)
+  print()
+
